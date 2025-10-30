@@ -38,7 +38,6 @@ class UserControllerTest {
     void createUser_returnsUserWithId() throws Exception {
         User user = new User(null, "Ada Lovelace", "ada@example.com");
 
-
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
