@@ -48,9 +48,21 @@ class UserControllerTest {
     }
 
     @Test
-    void getUserById_returnsCorrectUser() {
-        // Primer afegeix un usuari amb POST
-        // Després GET /users/{id} i comprova que torni aquest usuari
+    void getUserById_returnsCorrectUser() throws Exception{
+        User user = new User(null, "Ada Lovelace", "ada@example.com");
+
+        String response = mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(user)))
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+
+        UUID id = objectMapper.readValue(response, User.class).id();
+
+        mockMvc.perform(get("/users/" + id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Ada Lovelace"));
     }
 
     @Test
