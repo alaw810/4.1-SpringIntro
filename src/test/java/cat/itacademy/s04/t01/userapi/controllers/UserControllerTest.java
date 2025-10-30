@@ -74,8 +74,21 @@ class UserControllerTest {
     }
 
     @Test
-    void getUsers_withNameParam_returnsFilteredUsers() {
-        // Afegeix dos usuaris amb POST
-        // Fa GET /users?name=jo i comprova que només torni els que contenen "jo"
+    void getUsers_withNameParam_returnsFilteredUsers() throws Exception{
+        User user1 = new User(null, "Ada Lovelace", "ada@example.com");
+        User user2 = new User(null, "John Doe", "john@example.com");
+
+        mockMvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(user1)));
+
+        mockMvc.perform(post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(user2)));
+
+        mockMvc.perform(get("/users?name=jo"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].name").value("John Doe"));
     }
 }
