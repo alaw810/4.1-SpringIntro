@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,6 +30,16 @@ class InMemoryUserRepositoryTest {
         assertEquals("Ada Lovelace", users.getFirst().name());
     }
 
+    @Test
+    void findById_shouldReturnUserIfExists() {
+        UUID id = UUID.randomUUID();
+        User user = new User(id, "Alan Turing", "alan@example.com");
+        repository.save(user);
 
+        Optional<User> result = repository.findById(id);
+
+        assertTrue(result.isPresent());
+        assertEquals("Alan Turing", result.get().name());
+    }
 
 }
