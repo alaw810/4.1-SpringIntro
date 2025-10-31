@@ -59,4 +59,10 @@ class InMemoryUserRepositoryTest {
         assertEquals("John Doe", result.getFirst().name());
     }
 
+    @Test
+    void existsByEmail_shouldReturnTrueIfEmailExists() {
+        repository.save(new User(UUID.randomUUID(), "Ada Lovelace", "ada@example.com"));
+        assertTrue(repository.existsByEmail("ada@example.com"));
+    }
+
 }
