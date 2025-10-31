@@ -42,4 +42,10 @@ class InMemoryUserRepositoryTest {
         assertEquals("Alan Turing", result.get().name());
     }
 
+    @Test
+    void findById_shouldReturnEmptyIfNotExists() {
+        Optional<User> result = repository.findById(UUID.randomUUID());
+        assertTrue(result.isEmpty());
+    }
+
 }
