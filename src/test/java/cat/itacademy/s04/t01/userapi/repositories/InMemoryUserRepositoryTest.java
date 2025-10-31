@@ -48,4 +48,15 @@ class InMemoryUserRepositoryTest {
         assertTrue(result.isEmpty());
     }
 
+    @Test
+    void searchByName_shouldReturnMatchingUsers() {
+        repository.save(new User(UUID.randomUUID(), "John Doe", "john@example.com"));
+        repository.save(new User(UUID.randomUUID(), "Jane Doe", "jane@example.com"));
+
+        List<User> result = repository.searchByName("john");
+
+        assertEquals(1, result.size());
+        assertEquals("John Doe", result.getFirst().name());
+    }
+
 }
