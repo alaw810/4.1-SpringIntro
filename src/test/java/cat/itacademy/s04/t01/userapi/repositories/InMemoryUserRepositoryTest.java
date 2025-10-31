@@ -65,4 +65,8 @@ class InMemoryUserRepositoryTest {
         assertTrue(repository.existsByEmail("ada@example.com"));
     }
 
+    @Test
+    void existsByEmail_shouldReturnFalseIfEmailDoesNotExist() {
+        assertFalse(repository.existsByEmail("ghost@example.com"));
+    }
 }
