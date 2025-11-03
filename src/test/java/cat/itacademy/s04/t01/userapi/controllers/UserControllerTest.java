@@ -39,20 +39,20 @@ class UserControllerTest {
 
     @Test
     void createUser_returnsUserWithId() throws Exception {
-        User user = new User(null, "Ada Lovelace", "ada@example.com");
+        User user = new User(null, "Linus Torvalds", "linus@example.com");
 
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").isNotEmpty())
-                .andExpect(jsonPath("$.name").value("Ada Lovelace"))
-                .andExpect(jsonPath("$.email").value("ada@example.com"));
+                .andExpect(jsonPath("$.name").value("Linus Torvalds"))
+                .andExpect(jsonPath("$.email").value("linus@example.com"));
     }
 
     @Test
     void getUserById_returnsCorrectUser() throws Exception{
-        User user = new User(null, "Ada Lovelace", "ada@example.com");
+        User user = new User(null, "Grace Hopper", "grace@example.com");
 
         String response = mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -65,7 +65,7 @@ class UserControllerTest {
 
         mockMvc.perform(get("/users/" + id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Ada Lovelace"));
+                .andExpect(jsonPath("$.name").value("Grace Hopper"));
     }
 
     @Test
