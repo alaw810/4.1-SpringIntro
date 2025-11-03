@@ -11,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,5 +33,23 @@ class UserServiceImplTest {
                 () -> userService.createUser(user));
 
         verify(userRepository, never()).save(any());
+    }
+
+    @Test
+    void createUser_shouldSaveUserWhenEmailIsUnique() {
+        User user = new User(null, "Alan Turing", "alan@example.com");
+
+        when(userRepository.existsByEmail("alan@example.com")).thenReturn(false);
+
+        when(userRepository.save(any(User.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        User savedUser = userService.createUser(user);
+
+        assertNotNull(savedUser.id(), "The user ID should not be null");
+        assertEquals("Alan Turing", savedUser.name());
+        assertEquals("alan@example.com", savedUser.email());
+
+        verify(userRepository, times(1)).save(any(User.class));
     }
 }
